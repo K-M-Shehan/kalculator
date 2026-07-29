@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var tvDisplay: TextView
+
     private var currentInput = ""
     private var operator = ""
     private var firstValue = 0.0
@@ -48,18 +49,38 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnDivide).setOnClickListener { setOperation("/") }
     }
 
+    private fun updateDisplay() {
+        val displayText = when {
+            operator.isNotEmpty() && currentInput.isNotEmpty() -> {
+                "${formatNumber(firstValue)} $operator $currentInput"
+            }
+            operator.isNotEmpty() -> {
+                "${formatNumber(firstValue)} $operator"
+            }
+            currentInput.isNotEmpty() -> currentInput
+            else -> "0"
+        }
+        tvDisplay.text = displayText
+    }
+
+    private fun formatNumber(value: Double): String {
+        return if (value % 1.0 == 0.0) value.toInt().toString() else value.toString()
+    }
+
     private fun appendNumber(number: String) {
         if (justCalculated) {
             currentInput = ""
+            operator = ""
             justCalculated = false
         }
         currentInput += number
-        tvDisplay.text = currentInput
+        updateDisplay()
     }
 
     private fun appendDecimal() {
         if (justCalculated) {
             currentInput = ""
+            operator = ""
             justCalculated = false
         }
         if (currentInput.isEmpty()) {
@@ -67,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         } else if (!currentInput.contains(".")) {
             currentInput += "."
         }
-        tvDisplay.text = currentInput
+        updateDisplay()
     }
 
     private fun setOperation(op: String) {
@@ -76,6 +97,11 @@ class MainActivity : AppCompatActivity() {
             operator = op
             currentInput = ""
             justCalculated = false
+            updateDisplay()
+        } else if (operator.isNotEmpty()) {
+            // Allow changing the operator
+            operator = op
+            updateDisplay()
         }
     }
 
@@ -89,7 +115,8 @@ class MainActivity : AppCompatActivity() {
                 "/" -> if (secondValue != 0.0) firstValue / secondValue else 0.0
                 else -> 0.0
             }
-            tvDisplay.text = if (result % 1.0 == 0.0) result.toInt().toString() else result.toString()
+
+            tvDisplay.text = formatNumber(result)
             currentInput = result.toString()
             operator = ""
             justCalculated = true
@@ -99,7 +126,7 @@ class MainActivity : AppCompatActivity() {
     private fun backspace() {
         if (currentInput.isNotEmpty()) {
             currentInput = currentInput.dropLast(1)
-            tvDisplay.text = if (currentInput.isEmpty()) "0" else currentInput
+            updateDisplay()
         }
     }
 
