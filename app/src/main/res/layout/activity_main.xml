@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:background="#F5F7FA">
 
-    <!-- Title -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,20 +17,32 @@
         android:textColor="#333333"
         android:layout_marginBottom="12dp"/>
 
-    <!-- Display -->
+    <TextView
+        android:id="@+id/tvHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="64dp"
+        android:padding="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="#FFFFFF"
+        android:text="No calculations yet."
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:gravity="end"
+        android:maxLines="5"/>
+
     <TextView
         android:id="@+id/tvDisplay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="0"
-        android:textSize="48sp"
+        android:textSize="44sp"
         android:textAlignment="textEnd"
-        android:padding="16dp"
-        android:background="#E0E0E0"
-        android:textColor="#000000"
+        android:padding="18dp"
+        android:background="#FFFFFF"
+        android:textColor="#111111"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Buttons Grid -->
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,60 +50,48 @@
         android:rowCount="5"
         android:alignmentMode="alignBounds">
 
-        <!-- Row 1 -->
         <Button android:id="@+id/btnClear" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="C" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="C" android:textSize="22sp"/>
         <Button android:id="@+id/btnBackspace" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="⌫" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="⌫" android:textSize="22sp"/>
+        <Button android:id="@+id/btnModulus" android:layout_width="0dp" android:layout_height="70dp"
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="mod" android:textSize="18sp"/>
         <Button android:id="@+id/btnDivide" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="/" android:textSize="24sp"/>
-        <Button android:id="@+id/btnMultiply" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="*" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="÷" android:textSize="24sp"/>
 
-        <!-- Row 2 -->
         <Button android:id="@+id/btn7" android:layout_width="0dp" android:layout_height="70dp"
             android:layout_columnWeight="1" android:layout_margin="4dp" android:text="7" android:textSize="24sp"/>
         <Button android:id="@+id/btn8" android:layout_width="0dp" android:layout_height="70dp"
             android:layout_columnWeight="1" android:layout_margin="4dp" android:text="8" android:textSize="24sp"/>
         <Button android:id="@+id/btn9" android:layout_width="0dp" android:layout_height="70dp"
             android:layout_columnWeight="1" android:layout_margin="4dp" android:text="9" android:textSize="24sp"/>
-        <Button android:id="@+id/btnSubtract" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="-" android:textSize="24sp"/>
+        <Button android:id="@+id/btnMultiply" android:layout_width="0dp" android:layout_height="70dp"
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="×" android:textSize="24sp"/>
 
-        <!-- Row 3 -->
         <Button android:id="@+id/btn4" android:layout_width="0dp" android:layout_height="70dp"
             android:layout_columnWeight="1" android:layout_margin="4dp" android:text="4" android:textSize="24sp"/>
         <Button android:id="@+id/btn5" android:layout_width="0dp" android:layout_height="70dp"
             android:layout_columnWeight="1" android:layout_margin="4dp" android:text="5" android:textSize="24sp"/>
         <Button android:id="@+id/btn6" android:layout_width="0dp" android:layout_height="70dp"
             android:layout_columnWeight="1" android:layout_margin="4dp" android:text="6" android:textSize="24sp"/>
+        <Button android:id="@+id/btnSubtract" android:layout_width="0dp" android:layout_height="70dp"
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="-" android:textSize="24sp"/>
+
         <Button android:id="@+id/btnAdd" android:layout_width="0dp" android:layout_height="70dp"
             android:layout_columnWeight="1" android:layout_margin="4dp" android:text="+" android:textSize="24sp"/>
 
-        <!-- Row 4 -->
         <Button android:id="@+id/btn1" android:layout_width="0dp" android:layout_height="70dp"
             android:layout_columnWeight="1" android:layout_margin="4dp" android:text="1" android:textSize="24sp"/>
         <Button android:id="@+id/btn2" android:layout_width="0dp" android:layout_height="70dp"
             android:layout_columnWeight="1" android:layout_margin="4dp" android:text="2" android:textSize="24sp"/>
         <Button android:id="@+id/btn3" android:layout_width="0dp" android:layout_height="70dp"
             android:layout_columnWeight="1" android:layout_margin="4dp" android:text="3" android:textSize="24sp"/>
-        <Button
-            android:id="@+id/btnEquals"
-            android:layout_width="0dp"
-            android:layout_height="148dp"
-            android:layout_columnWeight="1"
-            android:layout_rowSpan="2"
-            android:layout_margin="4dp"
-            android:text="="
-            android:textSize="24sp"/>
 
-        <!-- Row 5 -->
         <Button
             android:id="@+id/btn0"
             android:layout_width="0dp"
             android:layout_height="70dp"
             android:layout_columnWeight="1"
-            android:layout_columnSpan="2"
             android:layout_margin="4dp"
             android:text="0"
             android:textSize="24sp"/>
@@ -103,9 +103,24 @@
             android:layout_margin="4dp"
             android:text="."
             android:textSize="24sp"/>
+        <Button
+            android:id="@+id/btnPercent"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:text="%"
+            android:textSize="24sp"/>
+        <Button
+            android:id="@+id/btnEquals"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:text="="
+            android:textSize="24sp"/>
     </GridLayout>
 
-    <!-- Bottom text -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
