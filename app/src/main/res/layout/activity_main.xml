@@ -5,32 +5,67 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:background="@drawable/bg_calculator_screen">
 
-    <!-- Title -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Calculator"
-        android:textSize="28sp"
+        android:text="@string/calculator_title"
+        android:textAllCaps="true"
+        android:letterSpacing="0.08"
+        android:textSize="26sp"
         android:textStyle="bold"
-        android:textColor="#333333"
-        android:layout_marginBottom="12dp"/>
+        android:textColor="@color/title_text"
+        android:layout_marginBottom="14dp"/>
 
-    <!-- Display -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:id="@+id/tvHistory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:background="@drawable/bg_panel"
+            android:text="@string/history_empty"
+            android:textColor="@color/muted_text"
+            android:textSize="14sp"
+            android:gravity="end"
+            android:maxLines="2"/>
+
+        <Button
+            android:id="@+id/btnToggleHistory"
+            android:layout_width="56dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:text="…"
+            android:textSize="18sp"
+            android:textAllCaps="false"
+            android:background="@drawable/bg_button_special"
+            android:textColor="@color/special_text"/>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tvDisplay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="104dp"
         android:text="0"
-        android:textSize="48sp"
+        android:textSize="44sp"
+        android:textStyle="bold"
         android:textAlignment="textEnd"
-        android:padding="16dp"
-        android:background="#E0E0E0"
-        android:textColor="#000000"
+        android:padding="18dp"
+        android:background="@drawable/bg_panel"
+        android:textColor="@color/body_text"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Buttons Grid -->
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,63 +73,68 @@
         android:rowCount="5"
         android:alignmentMode="alignBounds">
 
-        <!-- Row 1 -->
         <Button android:id="@+id/btnClear" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="C" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="C" android:textSize="22sp"
+            android:background="@drawable/bg_button_special" android:textColor="@color/special_text"/>
         <Button android:id="@+id/btnBackspace" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="⌫" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="⌫" android:textSize="22sp"
+            android:background="@drawable/bg_button_special" android:textColor="@color/special_text"/>
+        <Button android:id="@+id/btnModulus" android:layout_width="0dp" android:layout_height="70dp"
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="mod" android:textSize="18sp"
+            android:background="@drawable/bg_button_operator" android:textColor="@color/operator_text"/>
         <Button android:id="@+id/btnDivide" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="/" android:textSize="24sp"/>
-        <Button android:id="@+id/btnMultiply" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="*" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="÷" android:textSize="24sp"
+            android:background="@drawable/bg_button_operator" android:textColor="@color/operator_text"/>
 
-        <!-- Row 2 -->
         <Button android:id="@+id/btn7" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="7" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="7" android:textSize="24sp"
+            android:background="@drawable/bg_button_numeric" android:textColor="@color/numeric_text"/>
         <Button android:id="@+id/btn8" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="8" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="8" android:textSize="24sp"
+            android:background="@drawable/bg_button_numeric" android:textColor="@color/numeric_text"/>
         <Button android:id="@+id/btn9" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="9" android:textSize="24sp"/>
-        <Button android:id="@+id/btnSubtract" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="-" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="9" android:textSize="24sp"
+            android:background="@drawable/bg_button_numeric" android:textColor="@color/numeric_text"/>
+        <Button android:id="@+id/btnMultiply" android:layout_width="0dp" android:layout_height="70dp"
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="×" android:textSize="24sp"
+            android:background="@drawable/bg_button_operator" android:textColor="@color/operator_text"/>
 
-        <!-- Row 3 -->
         <Button android:id="@+id/btn4" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="4" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="4" android:textSize="24sp"
+            android:background="@drawable/bg_button_numeric" android:textColor="@color/numeric_text"/>
         <Button android:id="@+id/btn5" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="5" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="5" android:textSize="24sp"
+            android:background="@drawable/bg_button_numeric" android:textColor="@color/numeric_text"/>
         <Button android:id="@+id/btn6" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="6" android:textSize="24sp"/>
-        <Button android:id="@+id/btnAdd" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="+" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="6" android:textSize="24sp"
+            android:background="@drawable/bg_button_numeric" android:textColor="@color/numeric_text"/>
+        <Button android:id="@+id/btnSubtract" android:layout_width="0dp" android:layout_height="70dp"
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="-" android:textSize="24sp"
+            android:background="@drawable/bg_button_operator" android:textColor="@color/operator_text"/>
 
-        <!-- Row 4 -->
         <Button android:id="@+id/btn1" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="1" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="1" android:textSize="24sp"
+            android:background="@drawable/bg_button_numeric" android:textColor="@color/numeric_text"/>
         <Button android:id="@+id/btn2" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="2" android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="2" android:textSize="24sp"
+            android:background="@drawable/bg_button_numeric" android:textColor="@color/numeric_text"/>
         <Button android:id="@+id/btn3" android:layout_width="0dp" android:layout_height="70dp"
-            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="3" android:textSize="24sp"/>
-        <Button
-            android:id="@+id/btnEquals"
-            android:layout_width="0dp"
-            android:layout_height="148dp"
-            android:layout_columnWeight="1"
-            android:layout_rowSpan="2"
-            android:layout_margin="4dp"
-            android:text="="
-            android:textSize="24sp"/>
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="3" android:textSize="24sp"
+            android:background="@drawable/bg_button_numeric" android:textColor="@color/numeric_text"/>
+        <Button android:id="@+id/btnAdd" android:layout_width="0dp" android:layout_height="70dp"
+            android:layout_columnWeight="1" android:layout_margin="4dp" android:text="+" android:textSize="24sp"
+            android:background="@drawable/bg_button_operator" android:textColor="@color/operator_text"/>
 
-        <!-- Row 5 -->
         <Button
             android:id="@+id/btn0"
             android:layout_width="0dp"
             android:layout_height="70dp"
             android:layout_columnWeight="1"
-            android:layout_columnSpan="2"
             android:layout_margin="4dp"
             android:text="0"
-            android:textSize="24sp"/>
+            android:textSize="24sp"
+            android:background="@drawable/bg_button_numeric"
+            android:textColor="@color/numeric_text"/>
         <Button
             android:id="@+id/btnDecimal"
             android:layout_width="0dp"
@@ -102,16 +142,37 @@
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="."
-            android:textSize="24sp"/>
+            android:textSize="24sp"
+            android:background="@drawable/bg_button_numeric"
+            android:textColor="@color/numeric_text"/>
+        <Button
+            android:id="@+id/btnPercent"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:text="%"
+            android:textSize="24sp"
+            android:background="@drawable/bg_button_operator"
+            android:textColor="@color/operator_text"/>
+        <Button
+            android:id="@+id/btnEquals"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:text="="
+            android:textSize="24sp"
+            android:background="@drawable/bg_button_equals"
+            android:textColor="@color/accent_text"/>
     </GridLayout>
 
-    <!-- Bottom text -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="made by supremestrawhat"
+        android:text="@string/footer_credit"
         android:textSize="14sp"
-        android:textColor="#888888"
+        android:textColor="#D1D5DB"
         android:layout_marginTop="24dp"/>
 
 </LinearLayout>

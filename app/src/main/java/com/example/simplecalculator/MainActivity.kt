@@ -7,18 +7,20 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var tvDisplay: TextView
+    private val calculatorEngine = CalculatorEngine()
 
-    private var currentInput = ""
-    private var operator = ""
-    private var firstValue = 0.0
-    private var justCalculated = false
+    private lateinit var tvDisplay: TextView
+    private lateinit var tvHistory: TextView
+    private lateinit var btnToggleHistory: Button
+    private var historyExpanded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        tvHistory = findViewById(R.id.tvHistory)
         tvDisplay = findViewById(R.id.tvDisplay)
+        btnToggleHistory = findViewById(R.id.btnToggleHistory)
 
         setNumberButtonListeners()
         setOperationButtonListeners()
@@ -27,6 +29,10 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnEquals).setOnClickListener { calculate() }
         findViewById<Button>(R.id.btnDecimal).setOnClickListener { appendDecimal() }
         findViewById<Button>(R.id.btnBackspace).setOnClickListener { backspace() }
+        findViewById<Button>(R.id.btnPercent).setOnClickListener { appendPercent() }
+        btnToggleHistory.setOnClickListener { toggleHistory() }
+
+        updateDisplay()
     }
 
     private fun setNumberButtonListeners() {
@@ -47,94 +53,54 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnSubtract).setOnClickListener { setOperation("-") }
         findViewById<Button>(R.id.btnMultiply).setOnClickListener { setOperation("*") }
         findViewById<Button>(R.id.btnDivide).setOnClickListener { setOperation("/") }
+        findViewById<Button>(R.id.btnModulus).setOnClickListener { setOperation("mod") }
     }
 
     private fun updateDisplay() {
-        val displayText = when {
-            operator.isNotEmpty() && currentInput.isNotEmpty() -> {
-                "${formatNumber(firstValue)} $operator $currentInput"
-            }
-            operator.isNotEmpty() -> {
-                "${formatNumber(firstValue)} $operator"
-            }
-            currentInput.isNotEmpty() -> currentInput
-            else -> "0"
-        }
-        tvDisplay.text = displayText
-    }
-
-    private fun formatNumber(value: Double): String {
-        return if (value % 1.0 == 0.0) value.toInt().toString() else value.toString()
+        tvDisplay.text = calculatorEngine.displayText()
+        val historyLimit = if (historyExpanded) 10 else 3
+        tvHistory.text = calculatorEngine.historyText(historyLimit)
+        tvHistory.maxLines = if (historyExpanded) 10 else 4
+        btnToggleHistory.text = if (historyExpanded) getString(R.string.show_less_history) else getString(R.string.show_more_history)
     }
 
     private fun appendNumber(number: String) {
-        if (justCalculated) {
-            currentInput = ""
-            operator = ""
-            justCalculated = false
-        }
-        currentInput += number
+        calculatorEngine.inputDigit(number)
         updateDisplay()
     }
 
     private fun appendDecimal() {
-        if (justCalculated) {
-            currentInput = ""
-            operator = ""
-            justCalculated = false
-        }
-        if (currentInput.isEmpty()) {
-            currentInput = "0."
-        } else if (!currentInput.contains(".")) {
-            currentInput += "."
-        }
+        calculatorEngine.inputDecimal()
         updateDisplay()
     }
 
     private fun setOperation(op: String) {
-        if (currentInput.isNotEmpty()) {
-            firstValue = currentInput.toDouble()
-            operator = op
-            currentInput = ""
-            justCalculated = false
-            updateDisplay()
-        } else if (operator.isNotEmpty()) {
-            // Allow changing the operator
-            operator = op
-            updateDisplay()
-        }
+        calculatorEngine.inputOperation(op)
+        updateDisplay()
     }
 
     private fun calculate() {
-        if (currentInput.isNotEmpty() && operator.isNotEmpty()) {
-            val secondValue = currentInput.toDouble()
-            val result = when (operator) {
-                "+" -> firstValue + secondValue
-                "-" -> firstValue - secondValue
-                "*" -> firstValue * secondValue
-                "/" -> if (secondValue != 0.0) firstValue / secondValue else 0.0
-                else -> 0.0
-            }
-
-            tvDisplay.text = formatNumber(result)
-            currentInput = result.toString()
-            operator = ""
-            justCalculated = true
-        }
+        calculatorEngine.calculateResult()
+        updateDisplay()
     }
 
     private fun backspace() {
-        if (currentInput.isNotEmpty()) {
-            currentInput = currentInput.dropLast(1)
-            updateDisplay()
-        }
+        calculatorEngine.backspace()
+        updateDisplay()
+    }
+
+    private fun appendPercent() {
+        calculatorEngine.inputPercent()
+        updateDisplay()
     }
 
     private fun clear() {
-        currentInput = ""
-        operator = ""
-        firstValue = 0.0
-        justCalculated = false
-        tvDisplay.text = "0"
+        calculatorEngine.clear()
+        updateDisplay()
+    }
+
+    private fun toggleHistory() {
+        historyExpanded = !historyExpanded
+        updateDisplay()
     }
 }
