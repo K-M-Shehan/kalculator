@@ -2,5 +2,7 @@
     <string name="app_name">SimpleCalculator</string>
     <string name="calculator_title">Calculator</string>
     <string name="history_empty">No calculations yet.</string>
+    <string name="show_more_history">Show more history</string>
+    <string name="show_less_history">Show less history</string>
     <string name="footer_credit">made by supremestrawhat</string>
 </resources>

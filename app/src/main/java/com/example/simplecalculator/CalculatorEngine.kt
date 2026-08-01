@@ -147,11 +147,13 @@ class CalculatorEngine {
         }
     }
 
-    fun historyText(maxEntries: Int = 6): String {
+    fun historyText(maxEntries: Int = 10): String {
         if (historyEntries.isEmpty()) {
             return "No calculations yet."
         }
-        return historyEntries.takeLast(maxEntries).asReversed().joinToString("\n")
+
+        val visibleEntries = historyEntries.takeLast(maxEntries)
+        return visibleEntries.asReversed().joinToString("\n")
     }
 
     private fun calculate(leftValue: Double, operation: String, rightValue: Double): Double? {

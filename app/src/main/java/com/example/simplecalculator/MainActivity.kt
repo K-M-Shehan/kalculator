@@ -11,6 +11,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var tvDisplay: TextView
     private lateinit var tvHistory: TextView
+    private lateinit var btnToggleHistory: Button
+    private var historyExpanded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         tvHistory = findViewById(R.id.tvHistory)
         tvDisplay = findViewById(R.id.tvDisplay)
+        btnToggleHistory = findViewById(R.id.btnToggleHistory)
 
         setNumberButtonListeners()
         setOperationButtonListeners()
@@ -27,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnDecimal).setOnClickListener { appendDecimal() }
         findViewById<Button>(R.id.btnBackspace).setOnClickListener { backspace() }
         findViewById<Button>(R.id.btnPercent).setOnClickListener { appendPercent() }
+        btnToggleHistory.setOnClickListener { toggleHistory() }
 
         updateDisplay()
     }
@@ -54,7 +58,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateDisplay() {
         tvDisplay.text = calculatorEngine.displayText()
-        tvHistory.text = calculatorEngine.historyText()
+        val historyLimit = if (historyExpanded) 10 else 3
+        tvHistory.text = calculatorEngine.historyText(historyLimit)
+        tvHistory.maxLines = if (historyExpanded) 10 else 4
+        btnToggleHistory.text = if (historyExpanded) getString(R.string.show_less_history) else getString(R.string.show_more_history)
     }
 
     private fun appendNumber(number: String) {
@@ -89,6 +96,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun clear() {
         calculatorEngine.clear()
+        updateDisplay()
+    }
+
+    private fun toggleHistory() {
+        historyExpanded = !historyExpanded
         updateDisplay()
     }
 }

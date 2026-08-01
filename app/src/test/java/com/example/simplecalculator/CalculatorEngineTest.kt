@@ -62,4 +62,19 @@ class CalculatorEngineTest {
         assertTrue(engine.displayText().contains("undefined"))
         assertTrue(engine.historyText().contains("undefined"))
     }
+
+    @Test
+    fun historyTextDefaultsToTenEntries() {
+        val engine = CalculatorEngine()
+
+        repeat(11) {
+            engine.inputDigit("1")
+            engine.inputOperation("+")
+            engine.inputDigit("2")
+            engine.calculateResult()
+        }
+
+        val lines = engine.historyText().split("\n")
+        assertEquals(10, lines.size)
+    }
 }
