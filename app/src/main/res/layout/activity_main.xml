@@ -52,19 +52,30 @@
             android:textColor="@color/special_text"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvDisplay"
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="104dp"
-        android:text="0"
-        android:textSize="44sp"
-        android:textStyle="bold"
-        android:textAlignment="textEnd"
-        android:padding="18dp"
+        android:layout_height="104dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/bg_panel"
-        android:textColor="@color/body_text"
-        android:layout_marginBottom="16dp"/>
+        android:fillViewport="true"
+        android:scrollbars="horizontal"
+        android:overScrollMode="never">
+
+        <TextView
+            android:id="@+id/tvDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            android:padding="18dp"
+            android:text="0"
+            android:textSize="44sp"
+            android:textStyle="bold"
+            android:textColor="@color/body_text"
+            android:singleLine="true"
+            android:ellipsize="none"
+            android:scrollHorizontally="true"
+            android:maxLines="1"/>
+    </HorizontalScrollView>
 
     <GridLayout
         android:layout_width="match_parent"
