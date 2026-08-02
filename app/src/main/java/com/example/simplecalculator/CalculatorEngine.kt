@@ -48,11 +48,6 @@ class CalculatorEngine {
             return
         }
 
-        val inputValue = currentInput.toDoubleOrNull()
-        if (inputValue == null) {
-            showError("That number is not playing by the rules.")
-            return
-        }
         val inputDecimalValue = currentInput.toBigDecimalOrNull()
         if (inputDecimalValue == null) {
             showError("That number is not playing by the rules.")
@@ -75,7 +70,7 @@ class CalculatorEngine {
         }
 
         historyEntries.add(
-            "${formatNumber(previousAccumulator)} ${operationSymbol(previousOperation)} ${formatNumber(inputValue)} = ${formatNumber(result)}"
+            "${formatNumber(previousAccumulator)} ${operationSymbol(previousOperation)} ${formatNumber(inputDecimalValue)} = ${formatNumber(result)}"
         )
         accumulator = result
         currentInput = ""
@@ -207,11 +202,6 @@ class CalculatorEngine {
         if (errorMessage != null) {
             clear()
         }
-    }
-
-    private fun formatNumber(value: Double): String {
-        val plainText = BigDecimal.valueOf(value).stripTrailingZeros().toPlainString()
-        return if (plainText == "-0") "0" else plainText
     }
 
     private fun formatNumber(value: BigDecimal): String {

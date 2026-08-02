@@ -93,4 +93,66 @@ class CalculatorEngineTest {
 
         assertEquals("0.02", engine.displayText())
     }
+
+    @Test
+    fun addsDecimalValuesAccurately() {
+        val engine = CalculatorEngine()
+
+        engine.inputDigit("0")
+        engine.inputDecimal()
+        engine.inputDigit("1")
+        engine.inputOperation("+")
+        engine.inputDigit("0")
+        engine.inputDecimal()
+        engine.inputDigit("2")
+        engine.calculateResult()
+
+        assertEquals("0.3", engine.displayText())
+    }
+
+    @Test
+    fun subtractsDecimalValuesAccurately() {
+        val engine = CalculatorEngine()
+
+        engine.inputDigit("0")
+        engine.inputDecimal()
+        engine.inputDigit("3")
+        engine.inputOperation("-")
+        engine.inputDigit("0")
+        engine.inputDecimal()
+        engine.inputDigit("1")
+        engine.calculateResult()
+
+        assertEquals("0.2", engine.displayText())
+    }
+
+    @Test
+    fun dividesDecimalValuesAccurately() {
+        val engine = CalculatorEngine()
+
+        engine.inputDigit("0")
+        engine.inputDecimal()
+        engine.inputDigit("3")
+        engine.inputOperation("/")
+        engine.inputDigit("0")
+        engine.inputDecimal()
+        engine.inputDigit("1")
+        engine.calculateResult()
+
+        assertEquals("3", engine.displayText())
+    }
+
+    @Test
+    fun calculatesDecimalModulusAccurately() {
+        val engine = CalculatorEngine()
+
+        engine.inputDigit("5")
+        engine.inputDecimal()
+        engine.inputDigit("5")
+        engine.inputOperation("mod")
+        engine.inputDigit("2")
+        engine.calculateResult()
+
+        assertEquals("1.5", engine.displayText())
+    }
 }
