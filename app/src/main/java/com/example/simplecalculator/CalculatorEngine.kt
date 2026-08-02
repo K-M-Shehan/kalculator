@@ -1,10 +1,11 @@
 package com.example.simplecalculator
 
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 class CalculatorEngine {
 
-    private var accumulator: Double? = null
+    private var accumulator: BigDecimal? = null
     private var pendingOperator: String? = null
     private var currentInput = ""
     private var justCalculated = false
@@ -47,29 +48,29 @@ class CalculatorEngine {
             return
         }
 
-        val inputValue = currentInput.toDoubleOrNull()
-        if (inputValue == null) {
+        val inputDecimalValue = currentInput.toBigDecimalOrNull()
+        if (inputDecimalValue == null) {
             showError("That number is not playing by the rules.")
             return
         }
 
         if (accumulator == null || pendingOperator == null) {
-            accumulator = inputValue
+            accumulator = inputDecimalValue
             currentInput = ""
             pendingOperator = operation
             justCalculated = false
             return
         }
 
-        val previousAccumulator = accumulator ?: 0.0
+        val previousAccumulator = accumulator ?: BigDecimal.ZERO
         val previousOperation = pendingOperator ?: operation
-        val result = calculate(previousAccumulator, previousOperation, inputValue)
+        val result = calculate(previousAccumulator, previousOperation, inputDecimalValue)
         if (result == null) {
             return
         }
 
         historyEntries.add(
-            "${formatNumber(previousAccumulator)} ${operationSymbol(previousOperation)} ${formatNumber(inputValue)} = ${formatNumber(result)}"
+            "${formatNumber(previousAccumulator)} ${operationSymbol(previousOperation)} ${formatNumber(inputDecimalValue)} = ${formatNumber(result)}"
         )
         accumulator = result
         currentInput = ""
@@ -79,10 +80,10 @@ class CalculatorEngine {
 
     fun inputPercent() {
         resetAfterErrorIfNeeded()
-        val inputValue = currentInput.toDoubleOrNull() ?: return
+        val inputValue = currentInput.toBigDecimalOrNull() ?: return
         val percentValue = when (pendingOperator) {
-            "+", "-" -> (accumulator ?: inputValue) * inputValue / 100.0
-            else -> inputValue / 100.0
+            "+", "-" -> (accumulator ?: inputValue) * inputValue / BigDecimal(100)
+            else -> inputValue / BigDecimal(100)
         }
         currentInput = formatNumber(percentValue)
         justCalculated = false
@@ -92,7 +93,7 @@ class CalculatorEngine {
         resetAfterErrorIfNeeded()
         val leftValue = accumulator
         val operation = pendingOperator
-        val rightValue = currentInput.toDoubleOrNull()
+        val rightValue = currentInput.toBigDecimalOrNull()
 
         if (leftValue == null || operation == null || rightValue == null) {
             return
@@ -136,13 +137,13 @@ class CalculatorEngine {
 
         return when {
             pendingOperator != null && currentInput.isNotEmpty() && accumulator != null -> {
-                "${formatNumber(accumulator ?: 0.0)} ${operationSymbol(pendingOperator ?: "")} $currentInput"
+                "${formatNumber(accumulator ?: BigDecimal.ZERO)} ${operationSymbol(pendingOperator ?: "")} $currentInput"
             }
             pendingOperator != null && accumulator != null -> {
-                "${formatNumber(accumulator ?: 0.0)} ${operationSymbol(pendingOperator ?: "")}"
+                "${formatNumber(accumulator ?: BigDecimal.ZERO)} ${operationSymbol(pendingOperator ?: "")}"
             }
             currentInput.isNotEmpty() -> currentInput
-            accumulator != null -> formatNumber(accumulator ?: 0.0)
+            accumulator != null -> formatNumber(accumulator ?: BigDecimal.ZERO)
             else -> "0"
         }
     }
@@ -156,23 +157,23 @@ class CalculatorEngine {
         return visibleEntries.asReversed().joinToString("\n")
     }
 
-    private fun calculate(leftValue: Double, operation: String, rightValue: Double): Double? {
+    private fun calculate(leftValue: BigDecimal, operation: String, rightValue: BigDecimal): BigDecimal? {
         return when (operation) {
             "+" -> leftValue + rightValue
             "-" -> leftValue - rightValue
             "*" -> leftValue * rightValue
             "/" -> {
-                if (rightValue == 0.0) {
+                if (rightValue.compareTo(BigDecimal.ZERO) == 0) {
                     showError(
                         "${formatNumber(leftValue)} ÷ ${formatNumber(rightValue)} = undefined. The calculator is questioning reality."
                     )
                     null
                 } else {
-                    leftValue / rightValue
+                    leftValue.divide(rightValue, 10, RoundingMode.HALF_UP)
                 }
             }
             "mod" -> {
-                if (rightValue == 0.0) {
+                if (rightValue.compareTo(BigDecimal.ZERO) == 0) {
                     showError(
                         "${formatNumber(leftValue)} mod ${formatNumber(rightValue)} = undefined. Even math needs boundaries."
                     )
@@ -203,9 +204,17 @@ class CalculatorEngine {
         }
     }
 
-    private fun formatNumber(value: Double): String {
-        val plainText = BigDecimal.valueOf(value).stripTrailingZeros().toPlainString()
+    private fun formatNumber(value: BigDecimal): String {
+        val plainText = value.stripTrailingZeros().toPlainString()
         return if (plainText == "-0") "0" else plainText
+    }
+
+    private fun String.toBigDecimalOrNull(): BigDecimal? {
+        return try {
+            BigDecimal(this)
+        } catch (_: NumberFormatException) {
+            null
+        }
     }
 
     private fun operationSymbol(operation: String): String {
