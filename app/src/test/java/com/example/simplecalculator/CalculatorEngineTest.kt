@@ -77,4 +77,20 @@ class CalculatorEngineTest {
         val lines = engine.historyText().split("\n")
         assertEquals(10, lines.size)
     }
+
+    @Test
+    fun multipliesDecimalValuesAccurately() {
+        val engine = CalculatorEngine()
+
+        engine.inputDigit("0")
+        engine.inputDecimal()
+        engine.inputDigit("1")
+        engine.inputOperation("*")
+        engine.inputDigit("0")
+        engine.inputDecimal()
+        engine.inputDigit("2")
+        engine.calculateResult()
+
+        assertEquals("0.02", engine.displayText())
+    }
 }
